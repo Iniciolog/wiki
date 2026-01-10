@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,14 @@ export default function MainPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [, setLocation] = useLocation();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setLocation(`/articles?search=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   const { data: recentArticles, isLoading: isLoadingRecent } = useQuery<Article[]>({
     queryKey: ["/api/articles/recent"],
@@ -68,7 +76,7 @@ export default function MainPage() {
             </Link>
           </div>
           
-          <div className="flex-1 max-w-xl mx-4">
+          <form onSubmit={handleSearch} className="flex-1 max-w-xl mx-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -80,7 +88,7 @@ export default function MainPage() {
                 data-testid="input-search"
               />
             </div>
-          </div>
+          </form>
 
           <div className="flex items-center gap-2">
             <Button

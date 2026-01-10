@@ -14,8 +14,16 @@ export default function AllArticlesPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const params = useParams<{ name?: string }>();
-  const [, setLocation] = useLocation();
+  const [location, setLocation] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const searchParam = urlParams.get('search');
+    if (searchParam) {
+      setSearchQuery(decodeURIComponent(searchParam));
+    }
+  }, [location]);
   
   useEffect(() => {
     if (params.name) {
@@ -204,13 +212,16 @@ export default function AllArticlesPage() {
                 <span>Все статьи</span>
               </div>
 
-              <h1>Все статьи</h1>
+              <h1>{searchQuery ? `Результаты поиска: "${searchQuery}"` : "Все статьи"}</h1>
               
               {isLoadingArticles ? (
                 <Skeleton className="h-6 w-48 mb-6" />
               ) : (
                 <p className="text-muted-foreground mb-6">
-                  Всего статей в вики: <strong>{allArticles.length}</strong>
+                  {searchQuery 
+                    ? <>Найдено статей: <strong>{filteredArticles.length}</strong></>
+                    : <>Всего статей в вики: <strong>{allArticles.length}</strong></>
+                  }
                 </p>
               )}
 
