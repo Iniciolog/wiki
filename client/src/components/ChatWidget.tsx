@@ -1,9 +1,11 @@
 import { useState, useRef, useEffect } from "react";
+import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageCircle, X, Send, Loader2 } from "lucide-react";
+import { MessageCircle, X, Send, Loader2, LogIn } from "lucide-react";
+import { useAuth } from "@/lib/auth";
 
 interface ChatMessage {
   role: "user" | "assistant";
@@ -11,6 +13,7 @@ interface ChatMessage {
 }
 
 export function ChatWidget() {
+  const { user, isLoading: authLoading } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [input, setInput] = useState("");
@@ -96,6 +99,42 @@ export function ChatWidget() {
       >
         <MessageCircle className="h-6 w-6" />
       </Button>
+    );
+  }
+
+  if (!user && !authLoading) {
+    return (
+      <Card className="fixed bottom-4 right-4 w-80 sm:w-96 shadow-xl z-50">
+        <CardHeader className="flex flex-row items-center justify-between gap-2 py-3 px-4 border-b">
+          <CardTitle className="text-base font-medium">Хранитель Знаний</CardTitle>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsOpen(false)}
+            data-testid="button-close-chat"
+          >
+            <X className="h-4 w-4" />
+          </Button>
+        </CardHeader>
+        <CardContent className="p-6 text-center">
+          <MessageCircle className="h-12 w-12 mx-auto mb-4 text-muted-foreground opacity-50" />
+          <p className="text-sm text-muted-foreground mb-4">
+            Хранитель Знаний доступен только для авторизованных пользователей.
+          </p>
+          <Link href="/login">
+            <Button className="w-full" data-testid="button-login-chat">
+              <LogIn className="h-4 w-4 mr-2" />
+              Войти
+            </Button>
+          </Link>
+          <p className="text-xs text-muted-foreground mt-3">
+            Нет аккаунта?{" "}
+            <Link href="/register" className="text-primary hover:underline">
+              Зарегистрироваться
+            </Link>
+          </p>
+        </CardContent>
+      </Card>
     );
   }
 

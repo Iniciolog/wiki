@@ -3,6 +3,7 @@ import OpenAI from "openai";
 import { chatStorage } from "./storage";
 import { db } from "../../db";
 import { articles } from "@shared/schema";
+import { ensureAuthenticated } from "../../auth";
 
 const openai = new OpenAI({
   apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
@@ -145,7 +146,7 @@ export function registerChatRoutes(app: Express): void {
     }
   });
 
-  app.post("/api/chat/quick", async (req: Request, res: Response) => {
+  app.post("/api/chat/quick", ensureAuthenticated, async (req: Request, res: Response) => {
     try {
       const { message } = req.body;
       

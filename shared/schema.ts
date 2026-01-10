@@ -8,6 +8,8 @@ export const users = pgTable("users", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   username: text("username").notNull().unique(),
   password: text("password").notNull(),
+  role: text("role").notNull().default("user"),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
 export const insertUserSchema = createInsertSchema(users).pick({
@@ -51,6 +53,8 @@ export const articles = pgTable("articles", {
   seeAlso: text("see_also").array().notNull().default(sql`ARRAY[]::text[]`),
   references: text("references").array().notNull().default(sql`ARRAY[]::text[]`),
   categoryNames: text("category_names").array().notNull().default(sql`ARRAY[]::text[]`),
+  status: text("status").notNull().default("published"),
+  authorId: varchar("author_id"),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
   updatedBy: text("updated_by").notNull().default('Админ'),
