@@ -1,41 +1,39 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Search, Menu, X, Moon, Sun, BookOpen, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight, Filter } from "lucide-react";
+import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 
 const categories = [
-  { name: "Технологии", count: 42 },
-  { name: "Наука", count: 38 },
-  { name: "Программирование", count: 56 },
-  { name: "Математика", count: 24 },
-  { name: "Физика", count: 18 },
-  { name: "История", count: 31 },
+  { name: "Основы", count: 8 },
+  { name: "Практика", count: 12 },
+  { name: "Обучение", count: 6 },
+  { name: "Здоровье", count: 15 },
+  { name: "Безопасность", count: 7 },
+  { name: "Сравнения", count: 4 },
 ];
 
 const allArticles = [
-  { title: "Искусственный интеллект", category: "Технологии", updated: "10 янв 2026" },
-  { title: "Квантовые вычисления", category: "Физика", updated: "10 янв 2026" },
-  { title: "Машинное обучение", category: "Технологии", updated: "9 янв 2026" },
-  { title: "Нейронные сети", category: "Технологии", updated: "8 янв 2026" },
-  { title: "Блокчейн", category: "Технологии", updated: "7 янв 2026" },
-  { title: "Криптография", category: "Математика", updated: "6 янв 2026" },
-  { title: "Алгоритмы", category: "Программирование", updated: "5 янв 2026" },
-  { title: "Структуры данных", category: "Программирование", updated: "4 янв 2026" },
-  { title: "Теория графов", category: "Математика", updated: "3 янв 2026" },
-  { title: "Теория вероятностей", category: "Математика", updated: "2 янв 2026" },
-  { title: "Квантовая механика", category: "Физика", updated: "1 янв 2026" },
-  { title: "Термодинамика", category: "Физика", updated: "31 дек 2025" },
-  { title: "JavaScript", category: "Программирование", updated: "30 дек 2025" },
-  { title: "Python", category: "Программирование", updated: "29 дек 2025" },
-  { title: "TypeScript", category: "Программирование", updated: "28 дек 2025" },
-  { title: "React", category: "Программирование", updated: "27 дек 2025" },
-  { title: "История Интернета", category: "История", updated: "26 дек 2025" },
-  { title: "ARPANET", category: "История", updated: "25 дек 2025" },
-  { title: "Компьютерное зрение", category: "Технологии", updated: "24 дек 2025" },
-  { title: "Обработка естественного языка", category: "Технологии", updated: "23 дек 2025" },
+  { title: "Инициология", category: "Основы", updated: "10 янв 2026" },
+  { title: "Инициация", category: "Практика", updated: "10 янв 2026" },
+  { title: "Космоэнергетика и Инициология", category: "Сравнения", updated: "9 янв 2026" },
+  { title: "Рэйки и Инициология", category: "Сравнения", updated: "9 янв 2026" },
+  { title: "РМТ-технологии", category: "Обучение", updated: "8 янв 2026" },
+  { title: "Ступени обучения", category: "Обучение", updated: "8 янв 2026" },
+  { title: "Энергетические каналы", category: "Практика", updated: "7 янв 2026" },
+  { title: "Энергоинформационная безопасность", category: "Безопасность", updated: "7 янв 2026" },
+  { title: "Эгрегоры", category: "Практика", updated: "6 янв 2026" },
+  { title: "Целительные каналы", category: "Здоровье", updated: "6 янв 2026" },
+  { title: "Защитные каналы", category: "Безопасность", updated: "5 янв 2026" },
+  { title: "Социальные каналы", category: "Практика", updated: "5 янв 2026" },
+  { title: "Дистанционные сеансы", category: "Практика", updated: "4 янв 2026" },
+  { title: "Энергоцентры", category: "Основы", updated: "4 янв 2026" },
+  { title: "Чистка энергетики", category: "Здоровье", updated: "3 янв 2026" },
+  { title: "Мастер-Учитель", category: "Обучение", updated: "3 янв 2026" },
+  { title: "Открытые сессии", category: "Обучение", updated: "2 янв 2026" },
+  { title: "Источник энергии", category: "Основы", updated: "2 янв 2026" },
 ];
 
 export default function AllArticlesPage() {
@@ -78,8 +76,12 @@ export default function AllArticlesPage() {
             </Button>
             <Link href="/" data-testid="link-home">
               <div className="flex items-center gap-2 cursor-pointer">
-                <BookOpen className="h-6 w-6 text-primary" />
-                <span className="font-serif font-semibold text-xl hidden sm:inline">Персональная Вики</span>
+                <img 
+                  src="https://static.tildacdn.com/tild3862-6363-4664-a438-316536343535/___.png" 
+                  alt="Initiology" 
+                  className="h-8 w-auto"
+                />
+                <span className="font-serif font-semibold text-xl hidden sm:inline">Initiology Wiki</span>
               </div>
             </Link>
           </div>
@@ -161,7 +163,7 @@ export default function AllArticlesPage() {
               </Link>
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Категории
+                Разделы
               </div>
               {categories.map((cat) => (
                 <Link href={`/category/${cat.name}`} key={cat.name} data-testid={`link-category-${cat.name}`}>

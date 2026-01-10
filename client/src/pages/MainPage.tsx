@@ -1,31 +1,31 @@
 import { useState } from "react";
 import { Link } from "wouter";
-import { Search, Menu, X, Moon, Sun, BookOpen, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight, ExternalLink, Edit, Clock } from "lucide-react";
+import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 const recentChanges = [
-  { title: "Квантовые вычисления", date: "10 янв 2026", user: "Админ" },
-  { title: "Искусственный интеллект", date: "9 янв 2026", user: "Админ" },
-  { title: "Машинное обучение", date: "8 янв 2026", user: "Админ" },
-  { title: "Блокчейн", date: "7 янв 2026", user: "Админ" },
+  { title: "Инициология", date: "10 янв 2026", user: "Админ" },
+  { title: "РМТ-технологии", date: "9 янв 2026", user: "Админ" },
+  { title: "Энергетические каналы", date: "8 янв 2026", user: "Админ" },
+  { title: "Космоэнергетика и Инициология", date: "7 янв 2026", user: "Админ" },
 ];
 
 const featuredArticles = [
-  { title: "Искусственный интеллект", description: "Раздел компьютерных наук, занимающийся созданием интеллектуальных машин", category: "Технологии" },
-  { title: "Квантовые вычисления", description: "Вычисления на основе квантово-механических явлений", category: "Физика" },
-  { title: "Машинное обучение", description: "Подраздел ИИ, позволяющий системам обучаться на данных", category: "Технологии" },
-  { title: "Нейронные сети", description: "Вычислительные системы, вдохновленные биологическим мозгом", category: "Технологии" },
+  { title: "Инициология", description: "Энергоинформационная система нового поколения для оздоровления и благополучия", category: "Основы" },
+  { title: "Энергетические каналы", description: "Потоки космической энергии для исцеления и улучшения жизни", category: "Практика" },
+  { title: "РМТ-технологии", description: "Высшая ступень энергоинформационного развития человека", category: "Продвинутый уровень" },
+  { title: "Ступени обучения", description: "Путь от ученика до Мастера-Учителя Инициологии", category: "Обучение" },
 ];
 
 const categories = [
-  { name: "Технологии", count: 42 },
-  { name: "Наука", count: 38 },
-  { name: "Программирование", count: 56 },
-  { name: "Математика", count: 24 },
-  { name: "Физика", count: 18 },
-  { name: "История", count: 31 },
+  { name: "Основы", count: 8 },
+  { name: "Практика", count: 12 },
+  { name: "Обучение", count: 6 },
+  { name: "Здоровье", count: 15 },
+  { name: "Безопасность", count: 7 },
+  { name: "Сравнения", count: 4 },
 ];
 
 export default function MainPage() {
@@ -54,8 +54,12 @@ export default function MainPage() {
             </Button>
             <Link href="/" data-testid="link-home">
               <div className="flex items-center gap-2 cursor-pointer">
-                <BookOpen className="h-6 w-6 text-primary" />
-                <span className="font-serif font-semibold text-xl hidden sm:inline">Персональная Вики</span>
+                <img 
+                  src="https://static.tildacdn.com/tild3862-6363-4664-a438-316536343535/___.png" 
+                  alt="Initiology" 
+                  className="h-8 w-auto"
+                />
+                <span className="font-serif font-semibold text-xl hidden sm:inline">Initiology Wiki</span>
               </div>
             </Link>
           </div>
@@ -143,7 +147,7 @@ export default function MainPage() {
               </Link>
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Категории
+                Разделы
               </div>
               {categories.map((cat) => (
                 <Link href={`/category/${cat.name}`} key={cat.name} data-testid={`link-category-${cat.name}`}>
@@ -168,11 +172,34 @@ export default function MainPage() {
                 </Link>
               </div>
 
-              <h1>Добро пожаловать в Персональную Вики</h1>
+              <h1>Добро пожаловать в Initiology Wiki</h1>
               
               <p className="text-lg text-muted-foreground mb-6">
-                Ваша личная база знаний и энциклопедия. Создавайте, редактируйте и организовывайте информацию по вашим интересам.
+                База знаний по <strong>Инициологии</strong> — энергоинформационной системе нового поколения для оздоровления и повышения качества жизни.
               </p>
+
+              <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
+                  <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400 mb-2" />
+                  <h4 className="font-semibold mb-1 mt-0 border-0">Энергетика</h4>
+                  <p className="text-sm text-muted-foreground mb-0">Работа с космическими каналами энергии</p>
+                </div>
+                <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/50 dark:to-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
+                  <Heart className="h-8 w-8 text-green-600 dark:text-green-400 mb-2" />
+                  <h4 className="font-semibold mb-1 mt-0 border-0">Здоровье</h4>
+                  <p className="text-sm text-muted-foreground mb-0">Исцеление и восстановление организма</p>
+                </div>
+                <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/50 dark:to-purple-900/30 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
+                  <Shield className="h-8 w-8 text-purple-600 dark:text-purple-400 mb-2" />
+                  <h4 className="font-semibold mb-1 mt-0 border-0">Защита</h4>
+                  <p className="text-sm text-muted-foreground mb-0">Энергоинформационная безопасность</p>
+                </div>
+                <div className="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950/50 dark:to-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
+                  <Zap className="h-8 w-8 text-amber-600 dark:text-amber-400 mb-2" />
+                  <h4 className="font-semibold mb-1 mt-0 border-0">Развитие</h4>
+                  <p className="text-sm text-muted-foreground mb-0">Ступени мастерства и РМТ</p>
+                </div>
+              </div>
 
               <div className="grid md:grid-cols-2 gap-6 mb-8">
                 <div className="bg-card border border-border rounded-lg p-5">
@@ -224,41 +251,42 @@ export default function MainPage() {
                 </div>
               </div>
 
-              <h2>О вики</h2>
+              <h2>Что такое Инициология?</h2>
               <p>
-                Персональная Вики — это ваше пространство для хранения и организации знаний. 
-                Вдохновленная <a href="https://www.mediawiki.org" className="external" target="_blank" rel="noopener">MediaWiki</a>, 
-                эта платформа предоставляет удобный интерфейс для создания связанных статей, категоризации информации 
-                и быстрого поиска нужных данных.
+                <strong>Инициология</strong> — это энергетическая практика, направленная на оздоровление и повышение качества жизни. 
+                Метод базируется на взаимодействии с энергетическими каналами, по которым поступают потоки космической энергии.
+              </p>
+              <p>
+                Эти потоки благоприятно влияют на все сферы жизнедеятельности человека. Благодаря работе с каналами происходит 
+                физическое исцеление, очищение тонких энергетических структур, качественное улучшение всех сфер жизни.
               </p>
 
-              <h3>Возможности</h3>
+              <h3>Сферы применения</h3>
               <ul>
-                <li><strong>Создание статей</strong> — пишите статьи с форматированием, изображениями и ссылками</li>
-                <li><strong>Категории</strong> — организуйте статьи по темам и разделам</li>
-                <li><strong>Поиск</strong> — мгновенный поиск по всей базе знаний</li>
-                <li><strong>История изменений</strong> — отслеживайте все редакции</li>
-                <li><strong>Темная тема</strong> — комфортное чтение в любое время</li>
+                <li><strong>Здоровье</strong> — физическое исцеление, восстановление энергоцентров</li>
+                <li><strong>Социальная сфера</strong> — улучшение положения, карьерный рост, бизнес-успех</li>
+                <li><strong>Личная сфера</strong> — гармонизация отношений, укрепление семьи</li>
+                <li><strong>Безопасность</strong> — защита от негативных воздействий и недоброжелателей</li>
               </ul>
 
-              <h3>Быстрый старт</h3>
-              <ol>
-                <li>Используйте поиск вверху страницы для навигации</li>
-                <li>Изучите <Link href="/categories"><span className="text-wiki-link hover:underline cursor-pointer">категории</span></Link> в боковом меню</li>
-                <li>Откройте любую <Link href="/random"><span className="text-wiki-link hover:underline cursor-pointer">случайную статью</span></Link></li>
-                <li>Нажмите на редактирование для внесения изменений</li>
-              </ol>
+              <h3>Преимущества системы</h3>
+              <p>
+                Инициолог не затрачивает своей энергии на работу с проблемой. Всю работу выполняют каналы, 
+                по которым поступает энергия космоса. Ресурс каналов безграничен — они могут дать столько энергии, 
+                сколько нужно пациенту.
+              </p>
 
               <div className="wiki-notice">
-                <div className="wiki-notice-title">💡 Совет дня</div>
+                <div className="wiki-notice-title">📚 Начните изучение</div>
                 <p className="mb-0">
-                  Используйте клавишу <code>/</code> для быстрого перехода к поиску из любого места на сайте.
+                  Рекомендуем начать со статьи <Link href="/article/Инициология"><span className="text-wiki-link hover:underline cursor-pointer">«Инициология»</span></Link>, 
+                  где подробно описаны основы системы и её отличия от других энергопрактик.
                 </p>
               </div>
 
               <div className="wiki-category-box">
                 <span>Категории:</span>
-                <Link href="/category/Справка"><span className="text-wiki-link hover:underline cursor-pointer">Справка</span></Link>
+                <Link href="/category/Основы"><span className="text-wiki-link hover:underline cursor-pointer">Основы</span></Link>
                 {" • "}
                 <Link href="/category/Главная"><span className="text-wiki-link hover:underline cursor-pointer">Главная</span></Link>
               </div>
