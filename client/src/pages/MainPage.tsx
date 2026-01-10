@@ -201,8 +201,8 @@ export default function MainPage() {
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                   <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400 mb-2" />
-                  <h4 className="font-semibold mb-1 mt-0 border-0">Энергетика</h4>
-                  <p className="text-sm text-muted-foreground mb-0">Работа с космическими каналами энергии</p>
+                  <h4 className="font-semibold mb-1 mt-0 border-0">Энергия</h4>
+                  <p className="text-sm text-muted-foreground mb-0">Работа с энергоинформационными космическими каналами</p>
                 </div>
                 <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/50 dark:to-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
                   <Heart className="h-8 w-8 text-green-600 dark:text-green-400 mb-2" />
