@@ -71,7 +71,7 @@ export default function MainPage() {
                   alt="Initiology" 
                   className="h-8 w-auto"
                 />
-                <span className="font-serif font-semibold text-xl hidden sm:inline">Initiology Wiki</span>
+                <span className="font-serif font-semibold text-xl hidden sm:inline">Wiki Initiology</span>
               </div>
             </Link>
           </div>
@@ -192,7 +192,7 @@ export default function MainPage() {
                 </Link>
               </div>
 
-              <h1>Добро пожаловать в Initiology Wiki</h1>
+              <h1>Добро пожаловать в Wiki Initiology</h1>
               
               <p className="text-lg text-muted-foreground mb-6">
                 База знаний по <strong>Инициологии</strong> — комплементарной системе оздоровления, повышения качества жизни и энергоинформационной безопасности.

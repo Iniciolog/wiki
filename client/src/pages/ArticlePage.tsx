@@ -63,7 +63,7 @@ export default function ArticlePage() {
                   alt="Initiology" 
                   className="h-8 w-auto"
                 />
-                <span className="font-serif font-semibold text-xl hidden sm:inline">Initiology Wiki</span>
+                <span className="font-serif font-semibold text-xl hidden sm:inline">Wiki Initiology</span>
               </div>
             </Link>
           </div>

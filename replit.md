@@ -1,8 +1,8 @@
-# Initiology Wiki
+# Wiki Initiology
 
 ## Overview
 
-Initiology Wiki is a Russian-language knowledge base application about Initiology (Инициология) - an energy-information wellness system. The application follows a Wikipedia-style interface with articles, categories, search functionality, and an AI-powered chat assistant. Built as a full-stack TypeScript application with a React frontend and Express backend.
+Wiki Initiology is a Russian-language knowledge base application about Initiology (Инициология) - an energy-information wellness system. The application follows a Wikipedia-style interface with articles, categories, search functionality, and an AI-powered chat assistant. Built as a full-stack TypeScript application with a React frontend and Express backend.
 
 ## User Preferences
 
