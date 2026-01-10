@@ -1,42 +1,46 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-
-const recentChanges = [
-  { title: "Инициология", date: "10 янв 2026", user: "Админ" },
-  { title: "РМТ-технологии", date: "9 янв 2026", user: "Админ" },
-  { title: "Энергетические каналы", date: "8 янв 2026", user: "Админ" },
-  { title: "Космоэнергетика и Инициология", date: "7 янв 2026", user: "Админ" },
-];
-
-const featuredArticles = [
-  { title: "Инициология", description: "Энергоинформационная система нового поколения для оздоровления и благополучия", category: "Основы" },
-  { title: "Энергетические каналы", description: "Потоки космической энергии для исцеления и улучшения жизни", category: "Практика" },
-  { title: "РМТ-технологии", description: "Высшая ступень энергоинформационного развития человека", category: "Продвинутый уровень" },
-  { title: "Ступени обучения", description: "Путь от ученика до Мастера-Учителя Инициологии", category: "Обучение" },
-];
-
-const categories = [
-  { name: "Основы", count: 8 },
-  { name: "Практика", count: 12 },
-  { name: "Обучение", count: 6 },
-  { name: "Здоровье", count: 15 },
-  { name: "Безопасность", count: 7 },
-  { name: "Сравнения", count: 4 },
-];
+import { Skeleton } from "@/components/ui/skeleton";
+import type { Article } from "@shared/schema";
 
 export default function MainPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
+  const { data: recentArticles, isLoading: isLoadingRecent } = useQuery<Article[]>({
+    queryKey: ["/api/articles/recent"],
+  });
+
+  const { data: allArticles } = useQuery<Article[]>({
+    queryKey: ["/api/articles"],
+  });
+
+  const { data: categories, isLoading: isLoadingCategories } = useQuery<{ name: string; count: number }[]>({
+    queryKey: ["/api/categories/with-counts"],
+  });
+
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     document.documentElement.classList.toggle("dark");
   };
+
+  const featuredArticles = allArticles?.slice(0, 4).map(article => ({
+    title: article.title,
+    description: article.intro.substring(0, 100) + "...",
+    category: article.categoryNames[0] || "Основы"
+  })) || [];
+
+  const recentChanges = recentArticles?.slice(0, 4).map(article => ({
+    title: article.title,
+    date: new Date(article.updatedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' }),
+    user: article.updatedBy
+  })) || [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -149,16 +153,24 @@ export default function MainPage() {
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 Разделы
               </div>
-              {categories.map((cat) => (
-                <Link href={`/category/${cat.name}`} key={cat.name} data-testid={`link-category-${cat.name}`}>
-                  <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
-                    <span className="text-sm">{cat.name}</span>
-                    <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                      {cat.count}
-                    </span>
-                  </div>
-                </Link>
-              ))}
+              {isLoadingCategories ? (
+                <div className="px-3 space-y-2">
+                  {[1, 2, 3, 4].map(i => (
+                    <Skeleton key={i} className="h-8 w-full" />
+                  ))}
+                </div>
+              ) : (
+                categories?.map((cat) => (
+                  <Link href={`/category/${cat.name}`} key={cat.name} data-testid={`link-category-${cat.name}`}>
+                    <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
+                      <span className="text-sm">{cat.name}</span>
+                      <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                        {cat.count}
+                      </span>
+                    </div>
+                  </Link>
+                ))
+              )}
             </nav>
           </ScrollArea>
         </aside>
@@ -207,25 +219,33 @@ export default function MainPage() {
                     <Star className="h-5 w-5 text-primary" />
                     Избранные статьи
                   </h3>
-                  <div className="space-y-3">
-                    {featuredArticles.map((article) => (
-                      <Link href={`/article/${encodeURIComponent(article.title)}`} key={article.title} data-testid={`link-featured-${article.title}`}>
-                        <div className="group cursor-pointer">
-                          <div className="flex items-start gap-2">
-                            <ChevronRight className="h-4 w-4 mt-1 text-muted-foreground group-hover:text-primary transition-colors" />
-                            <div>
-                              <div className="text-wiki-link group-hover:underline font-medium">
-                                {article.title}
-                              </div>
-                              <div className="text-sm text-muted-foreground">
-                                {article.description}
+                  {isLoadingRecent ? (
+                    <div className="space-y-3">
+                      {[1, 2, 3, 4].map(i => (
+                        <Skeleton key={i} className="h-16 w-full" />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {featuredArticles.map((article) => (
+                        <Link href={`/article/${encodeURIComponent(article.title)}`} key={article.title} data-testid={`link-featured-${article.title}`}>
+                          <div className="group cursor-pointer">
+                            <div className="flex items-start gap-2">
+                              <ChevronRight className="h-4 w-4 mt-1 text-muted-foreground group-hover:text-primary transition-colors" />
+                              <div>
+                                <div className="text-wiki-link group-hover:underline font-medium">
+                                  {article.title}
+                                </div>
+                                <div className="text-sm text-muted-foreground">
+                                  {article.description}
+                                </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 <div className="bg-card border border-border rounded-lg p-5">
@@ -233,21 +253,29 @@ export default function MainPage() {
                     <Clock className="h-5 w-5 text-primary" />
                     Последние изменения
                   </h3>
-                  <div className="space-y-3">
-                    {recentChanges.map((change) => (
-                      <Link href={`/article/${encodeURIComponent(change.title)}`} key={change.title} data-testid={`link-recent-${change.title}`}>
-                        <div className="group cursor-pointer">
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Edit className="h-3.5 w-3.5 text-muted-foreground" />
-                              <span className="text-wiki-link group-hover:underline">{change.title}</span>
+                  {isLoadingRecent ? (
+                    <div className="space-y-3">
+                      {[1, 2, 3, 4].map(i => (
+                        <Skeleton key={i} className="h-10 w-full" />
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="space-y-3">
+                      {recentChanges.map((change) => (
+                        <Link href={`/article/${encodeURIComponent(change.title)}`} key={change.title} data-testid={`link-recent-${change.title}`}>
+                          <div className="group cursor-pointer">
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-2">
+                                <Edit className="h-3.5 w-3.5 text-muted-foreground" />
+                                <span className="text-wiki-link group-hover:underline">{change.title}</span>
+                              </div>
+                              <span className="text-xs text-muted-foreground">{change.date}</span>
                             </div>
-                            <span className="text-xs text-muted-foreground">{change.date}</span>
                           </div>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                        </Link>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </div>
 

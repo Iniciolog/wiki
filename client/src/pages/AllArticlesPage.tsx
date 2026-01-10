@@ -1,40 +1,13 @@
 import { useState } from "react";
 import { Link } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-
-const categories = [
-  { name: "Основы", count: 8 },
-  { name: "Практика", count: 12 },
-  { name: "Обучение", count: 6 },
-  { name: "Здоровье", count: 15 },
-  { name: "Безопасность", count: 7 },
-  { name: "Сравнения", count: 4 },
-];
-
-const allArticles = [
-  { title: "Инициология", category: "Основы", updated: "10 янв 2026" },
-  { title: "Инициация", category: "Практика", updated: "10 янв 2026" },
-  { title: "Космоэнергетика и Инициология", category: "Сравнения", updated: "9 янв 2026" },
-  { title: "Рэйки и Инициология", category: "Сравнения", updated: "9 янв 2026" },
-  { title: "РМТ-технологии", category: "Обучение", updated: "8 янв 2026" },
-  { title: "Ступени обучения", category: "Обучение", updated: "8 янв 2026" },
-  { title: "Энергетические каналы", category: "Практика", updated: "7 янв 2026" },
-  { title: "Энергоинформационная безопасность", category: "Безопасность", updated: "7 янв 2026" },
-  { title: "Эгрегоры", category: "Практика", updated: "6 янв 2026" },
-  { title: "Целительные каналы", category: "Здоровье", updated: "6 янв 2026" },
-  { title: "Защитные каналы", category: "Безопасность", updated: "5 янв 2026" },
-  { title: "Социальные каналы", category: "Практика", updated: "5 янв 2026" },
-  { title: "Дистанционные сеансы", category: "Практика", updated: "4 янв 2026" },
-  { title: "Энергоцентры", category: "Основы", updated: "4 янв 2026" },
-  { title: "Чистка энергетики", category: "Здоровье", updated: "3 янв 2026" },
-  { title: "Мастер-Учитель", category: "Обучение", updated: "3 янв 2026" },
-  { title: "Открытые сессии", category: "Обучение", updated: "2 янв 2026" },
-  { title: "Источник энергии", category: "Основы", updated: "2 янв 2026" },
-];
+import { Skeleton } from "@/components/ui/skeleton";
+import type { Article } from "@shared/schema";
 
 export default function AllArticlesPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -42,10 +15,24 @@ export default function AllArticlesPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
+  const { data: articlesData, isLoading: isLoadingArticles } = useQuery<Article[]>({
+    queryKey: ["/api/articles"],
+  });
+
+  const { data: categories, isLoading: isLoadingCategories } = useQuery<{ name: string; count: number }[]>({
+    queryKey: ["/api/categories/with-counts"],
+  });
+
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
     document.documentElement.classList.toggle("dark");
   };
+
+  const allArticles = articlesData?.map(article => ({
+    title: article.title,
+    category: article.categoryNames[0] || "",
+    updated: new Date(article.updatedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })
+  })) || [];
 
   const filteredArticles = allArticles.filter((article) => {
     const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase());
@@ -165,16 +152,24 @@ export default function AllArticlesPage() {
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 Разделы
               </div>
-              {categories.map((cat) => (
-                <Link href={`/category/${cat.name}`} key={cat.name} data-testid={`link-category-${cat.name}`}>
-                  <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
-                    <span className="text-sm">{cat.name}</span>
-                    <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
-                      {cat.count}
-                    </span>
-                  </div>
-                </Link>
-              ))}
+              {isLoadingCategories ? (
+                <div className="px-3 space-y-2">
+                  {[1, 2, 3, 4, 5, 6].map(i => (
+                    <Skeleton key={i} className="h-8 w-full" />
+                  ))}
+                </div>
+              ) : (
+                categories?.map((cat) => (
+                  <Link href={`/category/${cat.name}`} key={cat.name} data-testid={`link-category-${cat.name}`}>
+                    <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
+                      <span className="text-sm">{cat.name}</span>
+                      <span className="text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
+                        {cat.count}
+                      </span>
+                    </div>
+                  </Link>
+                ))
+              )}
             </nav>
           </ScrollArea>
         </aside>
@@ -192,52 +187,78 @@ export default function AllArticlesPage() {
 
               <h1>Все статьи</h1>
               
-              <p className="text-muted-foreground mb-6">
-                Всего статей в вики: <strong>{allArticles.length}</strong>
-              </p>
+              {isLoadingArticles ? (
+                <Skeleton className="h-6 w-48 mb-6" />
+              ) : (
+                <p className="text-muted-foreground mb-6">
+                  Всего статей в вики: <strong>{allArticles.length}</strong>
+                </p>
+              )}
 
-              <div className="flex flex-wrap gap-2 mb-6">
-                <Button
-                  variant={selectedCategory === null ? "default" : "outline"}
-                  size="sm"
-                  onClick={() => setSelectedCategory(null)}
-                  data-testid="filter-all"
-                >
-                  Все
-                </Button>
-                {categories.map((cat) => (
+              {isLoadingCategories ? (
+                <div className="flex flex-wrap gap-2 mb-6">
+                  <Skeleton className="h-8 w-16" />
+                  {[1, 2, 3, 4, 5].map(i => (
+                    <Skeleton key={i} className="h-8 w-24" />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-wrap gap-2 mb-6">
                   <Button
-                    key={cat.name}
-                    variant={selectedCategory === cat.name ? "default" : "outline"}
+                    variant={selectedCategory === null ? "default" : "outline"}
                     size="sm"
-                    onClick={() => setSelectedCategory(cat.name)}
-                    data-testid={`filter-${cat.name}`}
+                    onClick={() => setSelectedCategory(null)}
+                    data-testid="filter-all"
                   >
-                    {cat.name}
+                    Все
                   </Button>
-                ))}
-              </div>
+                  {categories?.map((cat) => (
+                    <Button
+                      key={cat.name}
+                      variant={selectedCategory === cat.name ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => setSelectedCategory(cat.name)}
+                      data-testid={`filter-${cat.name}`}
+                    >
+                      {cat.name}
+                    </Button>
+                  ))}
+                </div>
+              )}
 
-              {Object.entries(groupedArticles)
-                .sort(([a], [b]) => a.localeCompare(b, 'ru'))
-                .map(([letter, articles]) => (
-                  <div key={letter} className="mb-6">
-                    <h2 className="text-2xl font-serif">{letter}</h2>
-                    <ul className="space-y-2">
-                      {articles.map((article) => (
-                        <li key={article.title} className="flex items-center justify-between">
-                          <Link href={`/article/${encodeURIComponent(article.title)}`} data-testid={`link-article-${article.title}`}>
-                            <span className="text-wiki-link hover:underline cursor-pointer">{article.title}</span>
-                          </Link>
-                          <div className="flex items-center gap-3 text-sm text-muted-foreground">
-                            <Badge variant="secondary" className="font-normal">{article.category}</Badge>
-                            <span>{article.updated}</span>
-                          </div>
-                        </li>
+              {isLoadingArticles ? (
+                <div className="space-y-6">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="space-y-2">
+                      <Skeleton className="h-8 w-12 mb-2" />
+                      {[1, 2, 3, 4].map(j => (
+                        <Skeleton key={j} className="h-6 w-full" />
                       ))}
-                    </ul>
-                  </div>
-                ))}
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                Object.entries(groupedArticles)
+                  .sort(([a], [b]) => a.localeCompare(b, 'ru'))
+                  .map(([letter, articles]) => (
+                    <div key={letter} className="mb-6">
+                      <h2 className="text-2xl font-serif">{letter}</h2>
+                      <ul className="space-y-2">
+                        {articles.map((article) => (
+                          <li key={article.title} className="flex items-center justify-between">
+                            <Link href={`/article/${encodeURIComponent(article.title)}`} data-testid={`link-article-${article.title}`}>
+                              <span className="text-wiki-link hover:underline cursor-pointer">{article.title}</span>
+                            </Link>
+                            <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                              <Badge variant="secondary" className="font-normal">{article.category}</Badge>
+                              <span>{article.updated}</span>
+                            </div>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))
+              )}
             </div>
           </div>
         </main>
