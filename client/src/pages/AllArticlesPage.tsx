@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link } from "wouter";
+import { useState, useEffect } from "react";
+import { Link, useParams, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,7 +13,17 @@ export default function AllArticlesPage() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const params = useParams<{ name?: string }>();
+  const [, setLocation] = useLocation();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  
+  useEffect(() => {
+    if (params.name) {
+      setSelectedCategory(decodeURIComponent(params.name));
+    } else {
+      setSelectedCategory(null);
+    }
+  }, [params.name]);
 
   const { data: articlesData, isLoading: isLoadingArticles } = useQuery<Article[]>({
     queryKey: ["/api/articles"],
@@ -30,15 +40,24 @@ export default function AllArticlesPage() {
 
   const allArticles = articlesData?.map(article => ({
     title: article.title,
+    categoryNames: article.categoryNames || [],
     category: article.categoryNames[0] || "",
     updated: new Date(article.updatedAt).toLocaleDateString('ru-RU', { day: 'numeric', month: 'short', year: 'numeric' })
   })) || [];
 
   const filteredArticles = allArticles.filter((article) => {
     const matchesSearch = article.title.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesCategory = !selectedCategory || article.category === selectedCategory;
+    const matchesCategory = !selectedCategory || article.categoryNames.includes(selectedCategory);
     return matchesSearch && matchesCategory;
   });
+  
+  const handleCategoryClick = (categoryName: string | null) => {
+    if (categoryName) {
+      setLocation(`/category/${encodeURIComponent(categoryName)}`);
+    } else {
+      setLocation('/articles');
+    }
+  };
 
   const groupedArticles = filteredArticles.reduce((acc, article) => {
     const firstLetter = article.title[0].toUpperCase();
@@ -207,7 +226,7 @@ export default function AllArticlesPage() {
                   <Button
                     variant={selectedCategory === null ? "default" : "outline"}
                     size="sm"
-                    onClick={() => setSelectedCategory(null)}
+                    onClick={() => handleCategoryClick(null)}
                     data-testid="filter-all"
                   >
                     Все
@@ -217,7 +236,7 @@ export default function AllArticlesPage() {
                       key={cat.name}
                       variant={selectedCategory === cat.name ? "default" : "outline"}
                       size="sm"
-                      onClick={() => setSelectedCategory(cat.name)}
+                      onClick={() => handleCategoryClick(cat.name)}
                       data-testid={`filter-${cat.name}`}
                     >
                       {cat.name}
