@@ -7,6 +7,7 @@ import NotFound from "@/pages/not-found";
 import MainPage from "@/pages/MainPage";
 import ArticlePage from "@/pages/ArticlePage";
 import AllArticlesPage from "@/pages/AllArticlesPage";
+import { ChatWidget } from "@/components/ChatWidget";
 
 function Router() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <TooltipProvider>
         <Toaster />
         <Router />
+        <ChatWidget />
       </TooltipProvider>
     </QueryClientProvider>
   );
