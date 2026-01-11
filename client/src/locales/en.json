@@ -6,10 +6,14 @@
     "randomArticle": "Random Article",
     "announcements": "Bulletin Board",
     "navigation": "Navigation",
-    "actions": "Actions",
-    "newArticle": "Write Article",
-    "newAnnouncement": "Create Announcement",
-    "adminPanel": "Admin Panel"
+    "tools": "Tools",
+    "sections": "Sections",
+    "recentChanges": "Recent Changes",
+    "createArticle": "Create Article",
+    "myArticles": "My Articles",
+    "myAnnouncements": "My Announcements",
+    "adminPanel": "Admin Panel",
+    "home": "Home"
   },
   "search": {
     "placeholder": "Search wiki...",
@@ -17,14 +21,21 @@
     "results": "Search Results"
   },
   "main": {
-    "title": "Wiki Initiology",
-    "subtitle": "Welcome to Wiki Initiology",
-    "description": "A complementary system for health improvement, quality of life enhancement, and energy-information security",
+    "welcome": "Welcome to Wiki Initiology",
+    "description": "Knowledge base on <strong>Initiology</strong> — a complementary system for health improvement, quality of life enhancement, and energy-information security.",
+    "energy": "Energy",
+    "energyDesc": "Working with energy-information cosmic channels",
+    "health": "Health",
+    "healthDesc": "Healing and body restoration",
+    "protection": "Protection",
+    "protectionDesc": "Energy-information security",
+    "development": "Development",
+    "developmentDesc": "Mastery stages and RMT",
     "featuredArticles": "Featured Articles",
-    "recentArticles": "Recent Articles",
+    "recentArticles": "Recent Changes",
     "browseCategories": "Categories",
     "viewAll": "View All",
-    "articles": "articles",
+    "articlesCount": "articles",
     "readMore": "Read More"
   },
   "article": {

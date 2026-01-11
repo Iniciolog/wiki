@@ -6,10 +6,14 @@
     "randomArticle": "Zufälliger Artikel",
     "announcements": "Schwarzes Brett",
     "navigation": "Navigation",
-    "actions": "Aktionen",
-    "newArticle": "Artikel schreiben",
-    "newAnnouncement": "Ankündigung erstellen",
-    "adminPanel": "Admin-Panel"
+    "tools": "Werkzeuge",
+    "sections": "Abschnitte",
+    "recentChanges": "Letzte Änderungen",
+    "createArticle": "Artikel erstellen",
+    "myArticles": "Meine Artikel",
+    "myAnnouncements": "Meine Ankündigungen",
+    "adminPanel": "Admin-Panel",
+    "home": "Startseite"
   },
   "search": {
     "placeholder": "Wiki durchsuchen...",
@@ -17,14 +21,21 @@
     "results": "Suchergebnisse"
   },
   "main": {
-    "title": "Wiki Initiologie",
-    "subtitle": "Willkommen bei Wiki Initiologie",
-    "description": "Ein komplementäres System zur Gesundheitsverbesserung, Lebensqualitätssteigerung und Energie-Informations-Sicherheit",
+    "welcome": "Willkommen bei Wiki Initiologie",
+    "description": "Wissensdatenbank über <strong>Initiologie</strong> — ein komplementäres System zur Gesundheitsverbesserung, Lebensqualitätssteigerung und Energie-Informations-Sicherheit.",
+    "energy": "Energie",
+    "energyDesc": "Arbeit mit energie-informativen kosmischen Kanälen",
+    "health": "Gesundheit",
+    "healthDesc": "Heilung und Körperregeneration",
+    "protection": "Schutz",
+    "protectionDesc": "Energie-Informations-Sicherheit",
+    "development": "Entwicklung",
+    "developmentDesc": "Meisterschaftsstufen und RMT",
     "featuredArticles": "Ausgewählte Artikel",
-    "recentArticles": "Neueste Artikel",
+    "recentArticles": "Letzte Änderungen",
     "browseCategories": "Kategorien",
     "viewAll": "Alle anzeigen",
-    "articles": "Artikel",
+    "articlesCount": "Artikel",
     "readMore": "Weiterlesen"
   },
   "article": {

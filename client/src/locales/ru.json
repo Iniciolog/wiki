@@ -6,10 +6,14 @@
     "randomArticle": "Случайная статья",
     "announcements": "Доска объявлений",
     "navigation": "Навигация",
-    "actions": "Действия",
-    "newArticle": "Написать статью",
-    "newAnnouncement": "Создать объявление",
-    "adminPanel": "Админ-панель"
+    "tools": "Инструменты",
+    "sections": "Разделы",
+    "recentChanges": "Свежие правки",
+    "createArticle": "Создать статью",
+    "myArticles": "Мои статьи",
+    "myAnnouncements": "Мои объявления",
+    "adminPanel": "Панель админа",
+    "home": "Заглавная"
   },
   "search": {
     "placeholder": "Поиск по вики...",
@@ -17,14 +21,21 @@
     "results": "Результаты поиска"
   },
   "main": {
-    "title": "Wiki Initiology",
-    "subtitle": "Добро пожаловать в Wiki Инициологии",
-    "description": "Комплементарная система оздоровления, повышения качества жизни и энергоинформационной безопасности",
+    "welcome": "Добро пожаловать в Wiki Initiology",
+    "description": "База знаний по <strong>Инициологии</strong> — комплементарной системе оздоровления, повышения качества жизни и энергоинформационной безопасности.",
+    "energy": "Энергия",
+    "energyDesc": "Работа с энергоинформационными космическими каналами",
+    "health": "Здоровье",
+    "healthDesc": "Исцеление и восстановление организма",
+    "protection": "Защита",
+    "protectionDesc": "Энергоинформационная безопасность",
+    "development": "Развитие",
+    "developmentDesc": "Ступени мастерства и РМТ",
     "featuredArticles": "Избранные статьи",
-    "recentArticles": "Новые статьи",
+    "recentArticles": "Последние изменения",
     "browseCategories": "Категории",
     "viewAll": "Смотреть все",
-    "articles": "статей",
+    "articlesCount": "статей",
     "readMore": "Читать далее"
   },
   "article": {

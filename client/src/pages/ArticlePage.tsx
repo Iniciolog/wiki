@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, Edit, Clock, ChevronDown, ChevronRight, Printer, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import {
   Collapsible,
   CollapsibleContent,
@@ -39,6 +41,7 @@ export default function ArticlePage() {
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [tocOpen, setTocOpen] = useState(true);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isMobile) {
@@ -86,7 +89,7 @@ export default function ArticlePage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Поиск по вики..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-muted/50"
@@ -96,6 +99,7 @@ export default function ArticlePage() {
           </div>
 
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <Button
               variant="ghost"
               size="icon"

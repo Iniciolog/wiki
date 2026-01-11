@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Search, Menu, X, Moon, Sun, FileText, History, User, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap, PenSquare, FolderOpen, ShieldCheck, Megaphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/lib/auth";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import type { Article } from "@shared/schema";
 
 export default function MainPage() {
@@ -26,6 +28,7 @@ export default function MainPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [, setLocation] = useLocation();
   const { user } = useAuth();
+  const { t } = useTranslation();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -94,7 +97,7 @@ export default function MainPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Поиск по вики..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-muted/50"
@@ -104,6 +107,7 @@ export default function MainPage() {
           </form>
 
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <Button
               variant="ghost"
               size="icon"
@@ -139,46 +143,46 @@ export default function MainPage() {
           <ScrollArea className="h-full py-4">
             <nav className="px-3 space-y-1">
               <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Навигация
+                {t('nav.navigation')}
               </div>
               <Link href="/" data-testid="link-nav-main">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md bg-sidebar-accent text-sidebar-accent-foreground cursor-pointer">
                   <Home className="h-4 w-4" />
-                  <span>Заглавная страница</span>
+                  <span>{t('nav.mainPage')}</span>
                 </div>
               </Link>
               <Link href="/articles" data-testid="link-nav-articles">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                   <FileText className="h-4 w-4" />
-                  <span>Все статьи</span>
+                  <span>{t('nav.allArticles')}</span>
                 </div>
               </Link>
               <Link href="/categories" data-testid="link-nav-categories">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                   <Bookmark className="h-4 w-4" />
-                  <span>Категории</span>
+                  <span>{t('nav.categories')}</span>
                 </div>
               </Link>
               <Link href="/random" data-testid="link-nav-random">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                   <Star className="h-4 w-4" />
-                  <span>Случайная статья</span>
+                  <span>{t('nav.randomArticle')}</span>
                 </div>
               </Link>
               <Link href="/announcements" data-testid="link-nav-announcements">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                   <Megaphone className="h-4 w-4" />
-                  <span>Доска объявлений</span>
+                  <span>{t('nav.announcements')}</span>
                 </div>
               </Link>
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Инструменты
+                {t('nav.tools')}
               </div>
               <Link href="/recent" data-testid="link-nav-recent">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                   <History className="h-4 w-4" />
-                  <span>Свежие правки</span>
+                  <span>{t('nav.recentChanges')}</span>
                 </div>
               </Link>
               {user && (
@@ -186,19 +190,19 @@ export default function MainPage() {
                   <Link href="/create-article" data-testid="link-nav-create-article">
                     <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                       <PenSquare className="h-4 w-4" />
-                      <span>Создать статью</span>
+                      <span>{t('nav.createArticle')}</span>
                     </div>
                   </Link>
                   <Link href="/my-articles" data-testid="link-nav-my-articles">
                     <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                       <FolderOpen className="h-4 w-4" />
-                      <span>Мои статьи</span>
+                      <span>{t('nav.myArticles')}</span>
                     </div>
                   </Link>
                   <Link href="/my-announcements" data-testid="link-nav-my-announcements">
                     <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                       <Megaphone className="h-4 w-4" />
-                      <span>Мои объявления</span>
+                      <span>{t('nav.myAnnouncements')}</span>
                     </div>
                   </Link>
                 </>
@@ -207,13 +211,13 @@ export default function MainPage() {
                 <Link href="/admin" data-testid="link-nav-admin">
                   <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                     <ShieldCheck className="h-4 w-4" />
-                    <span>Панель админа</span>
+                    <span>{t('nav.adminPanel')}</span>
                   </div>
                 </Link>
               )}
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Разделы
+                {t('nav.sections')}
               </div>
               {isLoadingCategories ? (
                 <div className="px-3 space-y-2">
@@ -242,36 +246,34 @@ export default function MainPage() {
             <div className="wiki-content">
               <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                 <Link href="/" data-testid="breadcrumb-home">
-                  <span className="hover:text-wiki-link cursor-pointer">Заглавная</span>
+                  <span className="hover:text-wiki-link cursor-pointer">{t('nav.home')}</span>
                 </Link>
               </div>
 
-              <h1>Добро пожаловать в Wiki Initiology</h1>
+              <h1>{t('main.welcome')}</h1>
               
-              <p className="text-lg text-muted-foreground mb-6">
-                База знаний по <strong>Инициологии</strong> — комплементарной системе оздоровления, повышения качества жизни и энергоинформационной безопасности.
-              </p>
+              <p className="text-lg text-muted-foreground mb-6" dangerouslySetInnerHTML={{ __html: t('main.description') }} />
 
               <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
                 <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-950/50 dark:to-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
                   <Sparkles className="h-8 w-8 text-blue-600 dark:text-blue-400 mb-2" />
-                  <h4 className="font-semibold mb-1 mt-0 border-0">Энергия</h4>
-                  <p className="text-sm text-muted-foreground mb-0">Работа с энергоинформационными космическими каналами</p>
+                  <h4 className="font-semibold mb-1 mt-0 border-0">{t('main.energy')}</h4>
+                  <p className="text-sm text-muted-foreground mb-0">{t('main.energyDesc')}</p>
                 </div>
                 <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-950/50 dark:to-green-900/30 border border-green-200 dark:border-green-800 rounded-lg p-4">
                   <Heart className="h-8 w-8 text-green-600 dark:text-green-400 mb-2" />
-                  <h4 className="font-semibold mb-1 mt-0 border-0">Здоровье</h4>
-                  <p className="text-sm text-muted-foreground mb-0">Исцеление и восстановление организма</p>
+                  <h4 className="font-semibold mb-1 mt-0 border-0">{t('main.health')}</h4>
+                  <p className="text-sm text-muted-foreground mb-0">{t('main.healthDesc')}</p>
                 </div>
                 <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-950/50 dark:to-purple-900/30 border border-purple-200 dark:border-purple-800 rounded-lg p-4">
                   <Shield className="h-8 w-8 text-purple-600 dark:text-purple-400 mb-2" />
-                  <h4 className="font-semibold mb-1 mt-0 border-0">Защита</h4>
-                  <p className="text-sm text-muted-foreground mb-0">Энергоинформационная безопасность</p>
+                  <h4 className="font-semibold mb-1 mt-0 border-0">{t('main.protection')}</h4>
+                  <p className="text-sm text-muted-foreground mb-0">{t('main.protectionDesc')}</p>
                 </div>
                 <div className="bg-gradient-to-br from-amber-50 to-amber-100 dark:from-amber-950/50 dark:to-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-lg p-4">
                   <Zap className="h-8 w-8 text-amber-600 dark:text-amber-400 mb-2" />
-                  <h4 className="font-semibold mb-1 mt-0 border-0">Развитие</h4>
-                  <p className="text-sm text-muted-foreground mb-0">Ступени мастерства и РМТ</p>
+                  <h4 className="font-semibold mb-1 mt-0 border-0">{t('main.development')}</h4>
+                  <p className="text-sm text-muted-foreground mb-0">{t('main.developmentDesc')}</p>
                 </div>
               </div>
 
@@ -279,7 +281,7 @@ export default function MainPage() {
                 <div className="bg-card border border-border rounded-lg p-5">
                   <h3 className="flex items-center gap-2 text-lg font-serif font-semibold mb-4 mt-0 border-0">
                     <Star className="h-5 w-5 text-primary" />
-                    Избранные статьи
+                    {t('main.featuredArticles')}
                   </h3>
                   {isLoadingRecent ? (
                     <div className="space-y-3">
@@ -313,7 +315,7 @@ export default function MainPage() {
                 <div className="bg-card border border-border rounded-lg p-5">
                   <h3 className="flex items-center gap-2 text-lg font-serif font-semibold mb-4 mt-0 border-0">
                     <Clock className="h-5 w-5 text-primary" />
-                    Последние изменения
+                    {t('main.recentArticles')}
                   </h3>
                   {isLoadingRecent ? (
                     <div className="space-y-3">

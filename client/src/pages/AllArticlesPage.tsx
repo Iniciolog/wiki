@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 import type { Article } from "@shared/schema";
 import { useAuth } from "@/lib/auth";
 
@@ -15,6 +17,7 @@ export default function AllArticlesPage() {
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
   const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
   const [darkMode, setDarkMode] = useState(false);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (isMobile) {
@@ -118,7 +121,7 @@ export default function AllArticlesPage() {
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 type="search"
-                placeholder="Поиск по вики..."
+                placeholder={t('search.placeholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 bg-muted/50"
@@ -128,6 +131,7 @@ export default function AllArticlesPage() {
           </div>
 
           <div className="flex items-center gap-2">
+            <LanguageSwitcher />
             <Button
               variant="ghost"
               size="icon"
@@ -163,12 +167,12 @@ export default function AllArticlesPage() {
           <ScrollArea className="h-full py-4">
             <nav className="px-3 space-y-1">
               <div className="px-3 py-2 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Навигация
+                {t('nav.navigation')}
               </div>
               <Link href="/" data-testid="link-nav-main">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                   <Home className="h-4 w-4" />
-                  <span>Заглавная страница</span>
+                  <span>{t('nav.mainPage')}</span>
                 </div>
               </Link>
               <Link href="/articles" data-testid="link-nav-articles">
