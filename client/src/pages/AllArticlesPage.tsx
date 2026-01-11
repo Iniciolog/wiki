@@ -178,34 +178,34 @@ export default function AllArticlesPage() {
               <Link href="/articles" data-testid="link-nav-articles">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md bg-sidebar-accent text-sidebar-accent-foreground cursor-pointer">
                   <FileText className="h-4 w-4" />
-                  <span>Все статьи</span>
+                  <span>{t('nav.allArticles')}</span>
                 </div>
               </Link>
               <Link href="/categories" data-testid="link-nav-categories">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                   <Bookmark className="h-4 w-4" />
-                  <span>Категории</span>
+                  <span>{t('nav.categories')}</span>
                 </div>
               </Link>
               <Link href="/random" data-testid="link-nav-random">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                   <Star className="h-4 w-4" />
-                  <span>Случайная статья</span>
+                  <span>{t('nav.randomArticle')}</span>
                 </div>
               </Link>
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Инструменты
+                {t('nav.tools')}
               </div>
               <Link href="/recent" data-testid="link-nav-recent">
                 <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                   <History className="h-4 w-4" />
-                  <span>Свежие правки</span>
+                  <span>{t('nav.recentChanges')}</span>
                 </div>
               </Link>
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                Разделы
+                {t('nav.sections')}
               </div>
               {isLoadingCategories ? (
                 <div className="px-3 space-y-2">
@@ -234,13 +234,13 @@ export default function AllArticlesPage() {
             <div className="wiki-content">
               <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                 <Link href="/" data-testid="breadcrumb-home">
-                  <span className="hover:text-wiki-link cursor-pointer">Заглавная</span>
+                  <span className="hover:text-wiki-link cursor-pointer">{t('nav.home')}</span>
                 </Link>
                 <ChevronRight className="h-3 w-3" />
-                <span>Все статьи</span>
+                <span>{t('nav.allArticles')}</span>
               </div>
 
-              <h1>{searchQuery ? `Результаты поиска: "${searchQuery}"` : "Все статьи"}</h1>
+              <h1>{searchQuery ? `${t('search.results')}: "${searchQuery}"` : t('nav.allArticles')}</h1>
               
               {isLoadingArticles ? (
                 <Skeleton className="h-6 w-48 mb-6" />
