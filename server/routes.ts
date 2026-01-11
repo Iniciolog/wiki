@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertArticleSchema, insertCategorySchema } from "@shared/schema";
+import { insertArticleSchema, insertCategorySchema, insertAnnouncementSchema } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
 import { ensureAuthenticated, ensureAdmin } from "./auth";
 
@@ -219,6 +219,102 @@ export async function registerRoutes(
         return res.status(404).json({ message: "Статья не найдена или уже опубликована" });
       }
       res.json({ message: "Статья отклонена" });
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Announcement routes
+
+  // Get published announcements (public)
+  app.get("/api/announcements", async (req, res) => {
+    try {
+      const announcements = await storage.getPublishedAnnouncements();
+      res.json(announcements);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Get single announcement by ID
+  app.get("/api/announcements/:id", async (req, res) => {
+    try {
+      const announcement = await storage.getAnnouncement(req.params.id);
+      if (!announcement) {
+        return res.status(404).json({ message: "Объявление не найдено" });
+      }
+      if (announcement.status !== "published") {
+        return res.status(404).json({ message: "Объявление не найдено" });
+      }
+      res.json(announcement);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Get user's own announcements
+  app.get("/api/my-announcements", ensureAuthenticated, async (req, res) => {
+    try {
+      const announcements = await storage.getAnnouncementsByAuthor(req.user!.id);
+      res.json(announcements);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Submit announcement for review (user)
+  app.post("/api/submit-announcement", ensureAuthenticated, async (req, res) => {
+    try {
+      const result = insertAnnouncementSchema.safeParse({
+        ...req.body,
+        status: "pending",
+        authorId: req.user!.id,
+        authorName: req.user!.username,
+      });
+      if (!result.success) {
+        const validationError = fromZodError(result.error);
+        return res.status(400).json({ message: validationError.message });
+      }
+      const announcement = await storage.createAnnouncement(result.data);
+      res.status(201).json(announcement);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Get pending announcements (admin only)
+  app.get("/api/admin/pending-announcements", ensureAdmin, async (req, res) => {
+    try {
+      const announcements = await storage.getPendingAnnouncements();
+      res.json(announcements);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Approve announcement (admin only)
+  app.post("/api/admin/announcements/:id/approve", ensureAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const announcement = await storage.approveAnnouncement(id);
+      if (!announcement) {
+        return res.status(404).json({ message: "Объявление не найдено" });
+      }
+      res.json(announcement);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Reject announcement (admin only)
+  app.post("/api/admin/announcements/:id/reject", ensureAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const success = await storage.rejectAnnouncement(id);
+      if (!success) {
+        return res.status(404).json({ message: "Объявление не найдено" });
+      }
+      res.json({ message: "Объявление отклонено" });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }
