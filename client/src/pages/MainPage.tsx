@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Menu, X, Moon, Sun, FileText, History, User, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap, PenSquare, FolderOpen, ShieldCheck } from "lucide-react";
+import { Search, Menu, X, Moon, Sun, FileText, History, User, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap, PenSquare, FolderOpen, ShieldCheck, Megaphone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -143,6 +143,12 @@ export default function MainPage() {
                   <span>Случайная статья</span>
                 </div>
               </Link>
+              <Link href="/announcements" data-testid="link-nav-announcements">
+                <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
+                  <Megaphone className="h-4 w-4" />
+                  <span>Доска объявлений</span>
+                </div>
+              </Link>
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 Инструменты
@@ -165,6 +171,12 @@ export default function MainPage() {
                     <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
                       <FolderOpen className="h-4 w-4" />
                       <span>Мои статьи</span>
+                    </div>
+                  </Link>
+                  <Link href="/my-announcements" data-testid="link-nav-my-announcements">
+                    <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
+                      <Megaphone className="h-4 w-4" />
+                      <span>Мои объявления</span>
                     </div>
                   </Link>
                 </>

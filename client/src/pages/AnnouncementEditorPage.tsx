@@ -143,10 +143,12 @@ export default function AnnouncementEditorPage() {
               />
 
               <div className="space-y-3">
-                <FormLabel>Фотографии (необязательно)</FormLabel>
-                <FormDescription>
+                <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Фотографии (необязательно)
+                </label>
+                <p className="text-sm text-muted-foreground">
                   Добавьте ссылки на изображения (URL)
-                </FormDescription>
+                </p>
                 <div className="flex gap-2">
                   <Input
                     placeholder="https://example.com/image.jpg"

@@ -53,6 +53,13 @@ The backend uses a storage abstraction layer (`IStorage` interface) implemented 
 - **My articles page**: Users can view their submitted articles and statuses at `/my-articles`
 - **Security**: All public endpoints filter articles by `status="published"` only
 
+### Bulletin Board (Доска объявлений)
+- **Public board**: All users can view published announcements at `/announcements`
+- **User submissions**: Authenticated users can post announcements with title, description, photos (URLs), and contact info
+- **Moderation workflow**: Announcements have status "pending" until admin approval
+- **Admin moderation**: Admin panel has tabs for articles and announcements moderation
+- **My announcements**: Users can view their submissions at `/my-announcements`
+
 ### Build System
 - **Client Build**: Vite outputs to `dist/public`
 - **Server Build**: esbuild bundles server to `dist/index.cjs` with selective dependency bundling
