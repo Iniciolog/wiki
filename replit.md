@@ -46,6 +46,13 @@ The backend uses a storage abstraction layer (`IStorage` interface) implemented 
   - Batch processing utilities with rate limiting and retries
 - **Configuration**: Uses `AI_INTEGRATIONS_OPENAI_API_KEY` and `AI_INTEGRATIONS_OPENAI_BASE_URL` environment variables
 
+### User Article System
+- **User article creation**: Authenticated users can create articles via `/article/new` editor page
+- **Moderation workflow**: Articles submitted by users have status "pending" and are invisible on public pages
+- **Admin approval**: Admin can view pending articles at `/admin` and approve/reject them
+- **My articles page**: Users can view their submitted articles and statuses at `/my-articles`
+- **Security**: All public endpoints filter articles by `status="published"` only
+
 ### Build System
 - **Client Build**: Vite outputs to `dist/public`
 - **Server Build**: esbuild bundles server to `dist/index.cjs` with selective dependency bundling
