@@ -10,7 +10,7 @@ import {
   type InsertCategory
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, ilike, or, desc, sql } from "drizzle-orm";
+import { eq, ilike, or, desc, sql, and } from "drizzle-orm";
 
 export interface IStorage {
   // User operations
@@ -22,11 +22,16 @@ export interface IStorage {
   getArticle(id: string): Promise<Article | undefined>;
   getArticleByTitle(title: string): Promise<Article | undefined>;
   getAllArticles(): Promise<Article[]>;
+  getPublishedArticles(): Promise<Article[]>;
+  getPendingArticles(): Promise<Article[]>;
+  getArticlesByAuthor(authorId: string): Promise<Article[]>;
   searchArticles(query: string): Promise<Article[]>;
   getArticlesByCategory(categoryName: string): Promise<Article[]>;
   getRecentArticles(limit?: number): Promise<Article[]>;
   createArticle(article: InsertArticle): Promise<Article>;
   updateArticle(id: string, article: Partial<InsertArticle>): Promise<Article | undefined>;
+  approveArticle(id: string): Promise<Article | undefined>;
+  rejectArticle(id: string): Promise<boolean>;
   deleteArticle(id: string): Promise<boolean>;
   
   // Category operations
@@ -73,6 +78,18 @@ export class DatabaseStorage implements IStorage {
     return await db.select().from(articles).orderBy(articles.title);
   }
 
+  async getPublishedArticles(): Promise<Article[]> {
+    return await db.select().from(articles).where(eq(articles.status, "published")).orderBy(articles.title);
+  }
+
+  async getPendingArticles(): Promise<Article[]> {
+    return await db.select().from(articles).where(eq(articles.status, "pending")).orderBy(desc(articles.createdAt));
+  }
+
+  async getArticlesByAuthor(authorId: string): Promise<Article[]> {
+    return await db.select().from(articles).where(eq(articles.authorId, authorId)).orderBy(desc(articles.createdAt));
+  }
+
   async searchArticles(query: string): Promise<Article[]> {
     return await db
       .select()
@@ -117,6 +134,20 @@ export class DatabaseStorage implements IStorage {
       .where(eq(articles.id, id))
       .returning();
     return article || undefined;
+  }
+
+  async approveArticle(id: string): Promise<Article | undefined> {
+    const [article] = await db
+      .update(articles)
+      .set({ status: "published", updatedAt: new Date() })
+      .where(eq(articles.id, id))
+      .returning();
+    return article || undefined;
+  }
+
+  async rejectArticle(id: string): Promise<boolean> {
+    const result = await db.delete(articles).where(and(eq(articles.id, id), eq(articles.status, "pending")));
+    return result.rowCount !== null && result.rowCount > 0;
   }
 
   async deleteArticle(id: string): Promise<boolean> {
