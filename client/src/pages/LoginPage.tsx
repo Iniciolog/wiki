@@ -24,9 +24,23 @@ export default function LoginPage() {
       toast({ title: "Вход выполнен", description: "Добро пожаловать!" });
       setLocation("/");
     } catch (error: any) {
+      let errorMessage = "Проверьте имя пользователя и пароль";
+      if (error.message) {
+        const match = error.message.match(/\d+:\s*(.+)/);
+        if (match) {
+          try {
+            const parsed = JSON.parse(match[1]);
+            errorMessage = parsed.message || errorMessage;
+          } catch {
+            errorMessage = match[1] || error.message;
+          }
+        } else {
+          errorMessage = error.message;
+        }
+      }
       toast({
         title: "Ошибка входа",
-        description: error.message || "Проверьте имя пользователя и пароль",
+        description: errorMessage,
         variant: "destructive",
       });
     } finally {
