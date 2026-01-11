@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertArticleSchema, insertCategorySchema } from "@shared/schema";
 import { fromZodError } from "zod-validation-error";
+import { ensureAuthenticated, ensureAdmin } from "./auth";
 
 export async function registerRoutes(
   httpServer: Server,
@@ -136,6 +137,88 @@ export async function registerRoutes(
         return res.status(404).json({ message: "Article not found" });
       }
       res.status(204).send();
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // User article submission routes (protected)
+  
+  // Get published articles (for public display)
+  app.get("/api/articles/published", async (req, res) => {
+    try {
+      const articles = await storage.getPublishedArticles();
+      res.json(articles);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Get user's own articles
+  app.get("/api/my-articles", ensureAuthenticated, async (req, res) => {
+    try {
+      const articles = await storage.getArticlesByAuthor(req.user!.id);
+      res.json(articles);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Submit article for review (user)
+  app.post("/api/submit-article", ensureAuthenticated, async (req, res) => {
+    try {
+      const result = insertArticleSchema.safeParse({
+        ...req.body,
+        status: "pending",
+        authorId: req.user!.id,
+        updatedBy: req.user!.username,
+      });
+      if (!result.success) {
+        const validationError = fromZodError(result.error);
+        return res.status(400).json({ message: validationError.message });
+      }
+      const article = await storage.createArticle(result.data);
+      res.status(201).json(article);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Admin moderation routes
+
+  // Get pending articles (admin only)
+  app.get("/api/admin/pending-articles", ensureAdmin, async (req, res) => {
+    try {
+      const articles = await storage.getPendingArticles();
+      res.json(articles);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Approve article (admin only)
+  app.post("/api/admin/articles/:id/approve", ensureAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const article = await storage.approveArticle(id);
+      if (!article) {
+        return res.status(404).json({ message: "Статья не найдена" });
+      }
+      res.json(article);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  });
+
+  // Reject article (admin only)
+  app.post("/api/admin/articles/:id/reject", ensureAdmin, async (req, res) => {
+    try {
+      const { id } = req.params;
+      const success = await storage.rejectArticle(id);
+      if (!success) {
+        return res.status(404).json({ message: "Статья не найдена или уже опубликована" });
+      }
+      res.json({ message: "Статья отклонена" });
     } catch (error: any) {
       res.status(500).json({ message: error.message });
     }
