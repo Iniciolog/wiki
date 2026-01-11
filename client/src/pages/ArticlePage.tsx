@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, Edit, Clock, ChevronDown, ChevronRight, Printer, Share2 } from "lucide-react";
@@ -34,10 +34,21 @@ export default function ArticlePage() {
     queryKey: ["/api/categories/with-counts"],
   });
   
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [tocOpen, setTocOpen] = useState(true);
+
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarOpen(true);
+      const timer = setTimeout(() => {
+        setSidebarOpen(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
 
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -105,10 +116,17 @@ export default function ArticlePage() {
       </header>
 
       <div className="flex">
+        {sidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+            data-testid="sidebar-backdrop"
+          />
+        )}
         <aside
           className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } fixed lg:relative lg:translate-x-0 z-40 w-64 h-[calc(100vh-56px)] bg-sidebar border-r border-sidebar-border transition-transform duration-200`}
+          } fixed lg:relative lg:translate-x-0 z-40 w-64 h-[calc(100vh-56px)] bg-sidebar border-r border-sidebar-border transition-transform duration-300`}
         >
           <ScrollArea className="h-full py-4">
             <nav className="px-3 space-y-1">

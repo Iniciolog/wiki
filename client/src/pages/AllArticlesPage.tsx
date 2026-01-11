@@ -12,8 +12,19 @@ import { useAuth } from "@/lib/auth";
 
 export default function AllArticlesPage() {
   const { user } = useAuth();
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
+  const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
   const [darkMode, setDarkMode] = useState(false);
+
+  useEffect(() => {
+    if (isMobile) {
+      setSidebarOpen(true);
+      const timer = setTimeout(() => {
+        setSidebarOpen(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+  }, []);
   const [searchQuery, setSearchQuery] = useState("");
   const params = useParams<{ name?: string }>();
   const [location, setLocation] = useLocation();
@@ -137,10 +148,17 @@ export default function AllArticlesPage() {
       </header>
 
       <div className="flex">
+        {sidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-black/50 z-30 lg:hidden"
+            onClick={() => setSidebarOpen(false)}
+            data-testid="sidebar-backdrop"
+          />
+        )}
         <aside
           className={`${
             sidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } fixed lg:relative lg:translate-x-0 z-40 w-64 h-[calc(100vh-56px)] bg-sidebar border-r border-sidebar-border transition-transform duration-200`}
+          } fixed lg:relative lg:translate-x-0 z-40 w-64 h-[calc(100vh-56px)] bg-sidebar border-r border-sidebar-border transition-transform duration-300`}
         >
           <ScrollArea className="h-full py-4">
             <nav className="px-3 space-y-1">
