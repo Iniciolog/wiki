@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "mainPage": "Main Page",
+    "allArticles": "All Articles",
+    "categories": "Categories",
+    "randomArticle": "Random Article",
+    "announcements": "Bulletin Board",
+    "navigation": "Navigation",
+    "actions": "Actions",
+    "newArticle": "Write Article",
+    "newAnnouncement": "Create Announcement",
+    "adminPanel": "Admin Panel"
+  },
+  "search": {
+    "placeholder": "Search wiki...",
+    "noResults": "No results found",
+    "results": "Search Results"
+  },
+  "main": {
+    "title": "Wiki Initiology",
+    "subtitle": "Welcome to Wiki Initiology",
+    "description": "A complementary system for health improvement, quality of life enhancement, and energy-information security",
+    "featuredArticles": "Featured Articles",
+    "recentArticles": "Recent Articles",
+    "browseCategories": "Categories",
+    "viewAll": "View All",
+    "articles": "articles",
+    "readMore": "Read More"
+  },
+  "article": {
+    "contents": "Contents",
+    "seeAlso": "See Also",
+    "references": "References",
+    "categories": "Categories",
+    "notFound": "Article Not Found",
+    "loading": "Loading...",
+    "lastUpdated": "Last Updated",
+    "by": "By"
+  },
+  "auth": {
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "username": "Username",
+    "password": "Password",
+    "email": "Email",
+    "profile": "Profile"
+  },
+  "profile": {
+    "title": "My Profile",
+    "myArticles": "My Articles",
+    "myAnnouncements": "My Announcements",
+    "noArticles": "You have no articles yet",
+    "noAnnouncements": "You have no announcements yet"
+  },
+  "status": {
+    "published": "Published",
+    "pending": "Pending Review",
+    "rejected": "Rejected"
+  },
+  "chat": {
+    "title": "Knowledge Keeper",
+    "placeholder": "Ask a question about Initiology...",
+    "send": "Send",
+    "thinking": "Thinking...",
+    "loginRequired": "Login to ask a question"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "submit": "Submit",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close"
+  },
+  "language": {
+    "ru": "Русский",
+    "en": "English",
+    "de": "Deutsch"
+  }
+}

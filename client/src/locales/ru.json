@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "mainPage": "Заглавная страница",
+    "allArticles": "Все статьи",
+    "categories": "Категории",
+    "randomArticle": "Случайная статья",
+    "announcements": "Доска объявлений",
+    "navigation": "Навигация",
+    "actions": "Действия",
+    "newArticle": "Написать статью",
+    "newAnnouncement": "Создать объявление",
+    "adminPanel": "Админ-панель"
+  },
+  "search": {
+    "placeholder": "Поиск по вики...",
+    "noResults": "Ничего не найдено",
+    "results": "Результаты поиска"
+  },
+  "main": {
+    "title": "Wiki Initiology",
+    "subtitle": "Добро пожаловать в Wiki Инициологии",
+    "description": "Комплементарная система оздоровления, повышения качества жизни и энергоинформационной безопасности",
+    "featuredArticles": "Избранные статьи",
+    "recentArticles": "Новые статьи",
+    "browseCategories": "Категории",
+    "viewAll": "Смотреть все",
+    "articles": "статей",
+    "readMore": "Читать далее"
+  },
+  "article": {
+    "contents": "Содержание",
+    "seeAlso": "См. также",
+    "references": "Ссылки",
+    "categories": "Категории",
+    "notFound": "Статья не найдена",
+    "loading": "Загрузка...",
+    "lastUpdated": "Последнее обновление",
+    "by": "Автор"
+  },
+  "auth": {
+    "login": "Войти",
+    "logout": "Выйти",
+    "register": "Регистрация",
+    "username": "Имя пользователя",
+    "password": "Пароль",
+    "email": "Email",
+    "profile": "Профиль"
+  },
+  "profile": {
+    "title": "Мой профиль",
+    "myArticles": "Мои статьи",
+    "myAnnouncements": "Мои объявления",
+    "noArticles": "У вас пока нет статей",
+    "noAnnouncements": "У вас пока нет объявлений"
+  },
+  "status": {
+    "published": "Опубликовано",
+    "pending": "На модерации",
+    "rejected": "Отклонено"
+  },
+  "chat": {
+    "title": "Хранитель Знаний",
+    "placeholder": "Задайте вопрос об Инициологии...",
+    "send": "Отправить",
+    "thinking": "Думаю...",
+    "loginRequired": "Войдите, чтобы задать вопрос"
+  },
+  "common": {
+    "loading": "Загрузка...",
+    "error": "Ошибка",
+    "save": "Сохранить",
+    "cancel": "Отмена",
+    "delete": "Удалить",
+    "edit": "Редактировать",
+    "create": "Создать",
+    "submit": "Отправить",
+    "back": "Назад",
+    "next": "Далее",
+    "previous": "Назад",
+    "close": "Закрыть"
+  },
+  "language": {
+    "ru": "Русский",
+    "en": "English",
+    "de": "Deutsch"
+  }
+}

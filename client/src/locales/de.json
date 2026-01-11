@@ -1,0 +1,87 @@
+{
+  "nav": {
+    "mainPage": "Hauptseite",
+    "allArticles": "Alle Artikel",
+    "categories": "Kategorien",
+    "randomArticle": "Zufälliger Artikel",
+    "announcements": "Schwarzes Brett",
+    "navigation": "Navigation",
+    "actions": "Aktionen",
+    "newArticle": "Artikel schreiben",
+    "newAnnouncement": "Ankündigung erstellen",
+    "adminPanel": "Admin-Panel"
+  },
+  "search": {
+    "placeholder": "Wiki durchsuchen...",
+    "noResults": "Keine Ergebnisse gefunden",
+    "results": "Suchergebnisse"
+  },
+  "main": {
+    "title": "Wiki Initiologie",
+    "subtitle": "Willkommen bei Wiki Initiologie",
+    "description": "Ein komplementäres System zur Gesundheitsverbesserung, Lebensqualitätssteigerung und Energie-Informations-Sicherheit",
+    "featuredArticles": "Ausgewählte Artikel",
+    "recentArticles": "Neueste Artikel",
+    "browseCategories": "Kategorien",
+    "viewAll": "Alle anzeigen",
+    "articles": "Artikel",
+    "readMore": "Weiterlesen"
+  },
+  "article": {
+    "contents": "Inhaltsverzeichnis",
+    "seeAlso": "Siehe auch",
+    "references": "Referenzen",
+    "categories": "Kategorien",
+    "notFound": "Artikel nicht gefunden",
+    "loading": "Lädt...",
+    "lastUpdated": "Zuletzt aktualisiert",
+    "by": "Von"
+  },
+  "auth": {
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "register": "Registrieren",
+    "username": "Benutzername",
+    "password": "Passwort",
+    "email": "E-Mail",
+    "profile": "Profil"
+  },
+  "profile": {
+    "title": "Mein Profil",
+    "myArticles": "Meine Artikel",
+    "myAnnouncements": "Meine Ankündigungen",
+    "noArticles": "Sie haben noch keine Artikel",
+    "noAnnouncements": "Sie haben noch keine Ankündigungen"
+  },
+  "status": {
+    "published": "Veröffentlicht",
+    "pending": "In Überprüfung",
+    "rejected": "Abgelehnt"
+  },
+  "chat": {
+    "title": "Wissenshüter",
+    "placeholder": "Stellen Sie eine Frage zur Initiologie...",
+    "send": "Senden",
+    "thinking": "Denke nach...",
+    "loginRequired": "Melden Sie sich an, um eine Frage zu stellen"
+  },
+  "common": {
+    "loading": "Lädt...",
+    "error": "Fehler",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "submit": "Absenden",
+    "back": "Zurück",
+    "next": "Weiter",
+    "previous": "Zurück",
+    "close": "Schließen"
+  },
+  "language": {
+    "ru": "Русский",
+    "en": "English",
+    "de": "Deutsch"
+  }
+}
