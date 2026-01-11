@@ -101,9 +101,13 @@ export default function MainPage() {
             >
               {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-            <Button variant="ghost" size="icon" data-testid="button-user">
-              <User className="h-5 w-5" />
-            </Button>
+            {user && (
+              <Link href="/profile">
+                <Button variant="ghost" size="icon" data-testid="button-user-profile">
+                  <User className="h-5 w-5" />
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </header>

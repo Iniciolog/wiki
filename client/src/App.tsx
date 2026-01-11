@@ -16,6 +16,7 @@ import MyArticlesPage from "@/pages/MyArticlesPage";
 import AnnouncementsPage from "@/pages/AnnouncementsPage";
 import AnnouncementEditorPage from "@/pages/AnnouncementEditorPage";
 import MyAnnouncementsPage from "@/pages/MyAnnouncementsPage";
+import ProfilePage from "@/pages/ProfilePage";
 import { ChatWidget } from "@/components/ChatWidget";
 
 function Router() {
@@ -36,6 +37,7 @@ function Router() {
       <Route path="/announcements" component={AnnouncementsPage} />
       <Route path="/announcement/new" component={AnnouncementEditorPage} />
       <Route path="/my-announcements" component={MyAnnouncementsPage} />
+      <Route path="/profile" component={ProfilePage} />
       <Route component={NotFound} />
     </Switch>
   );

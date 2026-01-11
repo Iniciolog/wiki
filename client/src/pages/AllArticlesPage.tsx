@@ -8,8 +8,10 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Article } from "@shared/schema";
+import { useAuth } from "@/lib/auth";
 
 export default function AllArticlesPage() {
+  const { user } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -123,9 +125,13 @@ export default function AllArticlesPage() {
             >
               {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-            <Button variant="ghost" size="icon" data-testid="button-user">
-              <User className="h-5 w-5" />
-            </Button>
+            {user && (
+              <Link href="/profile">
+                <Button variant="ghost" size="icon" data-testid="button-user-profile">
+                  <User className="h-5 w-5" />
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </header>

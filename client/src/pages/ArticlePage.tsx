@@ -12,10 +12,12 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import type { Article } from "@shared/schema";
+import { useAuth } from "@/lib/auth";
 
 export default function ArticlePage() {
   const params = useParams<{ title: string }>();
   const articleTitle = decodeURIComponent(params.title || "Инициология");
+  const { user } = useAuth();
   
   const { data: article, isLoading: isLoadingArticle, error } = useQuery<Article>({
     queryKey: ["/api/articles/by-title", articleTitle],
@@ -91,9 +93,13 @@ export default function ArticlePage() {
             >
               {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-            <Button variant="ghost" size="icon" data-testid="button-user">
-              <User className="h-5 w-5" />
-            </Button>
+            {user && (
+              <Link href="/profile">
+                <Button variant="ghost" size="icon" data-testid="button-user-profile">
+                  <User className="h-5 w-5" />
+                </Button>
+              </Link>
+            )}
           </div>
         </div>
       </header>
