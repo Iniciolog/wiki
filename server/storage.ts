@@ -2,12 +2,15 @@ import {
   users, 
   articles, 
   categories,
+  announcements,
   type User, 
   type InsertUser,
   type Article,
   type InsertArticle,
   type Category,
-  type InsertCategory
+  type InsertCategory,
+  type Announcement,
+  type InsertAnnouncement
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, ilike, or, desc, sql, and } from "drizzle-orm";
@@ -41,6 +44,16 @@ export interface IStorage {
   getCategoriesWithCounts(): Promise<{ name: string; count: number }[]>;
   createCategory(category: InsertCategory): Promise<Category>;
   deleteCategory(id: string): Promise<boolean>;
+  
+  // Announcement operations
+  getAnnouncement(id: string): Promise<Announcement | undefined>;
+  getPublishedAnnouncements(): Promise<Announcement[]>;
+  getPendingAnnouncements(): Promise<Announcement[]>;
+  getAnnouncementsByAuthor(authorId: string): Promise<Announcement[]>;
+  createAnnouncement(announcement: InsertAnnouncement): Promise<Announcement>;
+  approveAnnouncement(id: string): Promise<Announcement | undefined>;
+  rejectAnnouncement(id: string): Promise<boolean>;
+  deleteAnnouncement(id: string): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -202,6 +215,51 @@ export class DatabaseStorage implements IStorage {
 
   async deleteCategory(id: string): Promise<boolean> {
     const result = await db.delete(categories).where(eq(categories.id, id));
+    return result.rowCount !== null && result.rowCount > 0;
+  }
+
+  // Announcement operations
+  async getAnnouncement(id: string): Promise<Announcement | undefined> {
+    const [announcement] = await db.select().from(announcements).where(eq(announcements.id, id));
+    return announcement || undefined;
+  }
+
+  async getPublishedAnnouncements(): Promise<Announcement[]> {
+    return await db.select().from(announcements).where(eq(announcements.status, "published")).orderBy(desc(announcements.createdAt));
+  }
+
+  async getPendingAnnouncements(): Promise<Announcement[]> {
+    return await db.select().from(announcements).where(eq(announcements.status, "pending")).orderBy(desc(announcements.createdAt));
+  }
+
+  async getAnnouncementsByAuthor(authorId: string): Promise<Announcement[]> {
+    return await db.select().from(announcements).where(eq(announcements.authorId, authorId)).orderBy(desc(announcements.createdAt));
+  }
+
+  async createAnnouncement(insertAnnouncement: InsertAnnouncement): Promise<Announcement> {
+    const [announcement] = await db
+      .insert(announcements)
+      .values(insertAnnouncement as any)
+      .returning();
+    return announcement;
+  }
+
+  async approveAnnouncement(id: string): Promise<Announcement | undefined> {
+    const [announcement] = await db
+      .update(announcements)
+      .set({ status: "published", updatedAt: new Date() })
+      .where(eq(announcements.id, id))
+      .returning();
+    return announcement || undefined;
+  }
+
+  async rejectAnnouncement(id: string): Promise<boolean> {
+    const result = await db.delete(announcements).where(eq(announcements.id, id));
+    return result.rowCount !== null && result.rowCount > 0;
+  }
+
+  async deleteAnnouncement(id: string): Promise<boolean> {
+    const result = await db.delete(announcements).where(eq(announcements.id, id));
     return result.rowCount !== null && result.rowCount > 0;
   }
 }
