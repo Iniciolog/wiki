@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap } from "lucide-react";
+import { Search, Menu, X, Moon, Sun, FileText, History, User, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap, PenSquare, FolderOpen, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useAuth } from "@/lib/auth";
 import type { Article } from "@shared/schema";
 
 export default function MainPage() {
@@ -13,6 +14,7 @@ export default function MainPage() {
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [, setLocation] = useLocation();
+  const { user } = useAuth();
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -151,12 +153,30 @@ export default function MainPage() {
                   <span>Свежие правки</span>
                 </div>
               </Link>
-              <Link href="/settings" data-testid="link-nav-settings">
-                <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
-                  <Settings className="h-4 w-4" />
-                  <span>Настройки</span>
-                </div>
-              </Link>
+              {user && (
+                <>
+                  <Link href="/create-article" data-testid="link-nav-create-article">
+                    <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
+                      <PenSquare className="h-4 w-4" />
+                      <span>Создать статью</span>
+                    </div>
+                  </Link>
+                  <Link href="/my-articles" data-testid="link-nav-my-articles">
+                    <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
+                      <FolderOpen className="h-4 w-4" />
+                      <span>Мои статьи</span>
+                    </div>
+                  </Link>
+                </>
+              )}
+              {user?.role === "admin" && (
+                <Link href="/admin" data-testid="link-nav-admin">
+                  <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
+                    <ShieldCheck className="h-4 w-4" />
+                    <span>Панель админа</span>
+                  </div>
+                </Link>
+              )}
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 Разделы

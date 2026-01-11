@@ -95,9 +95,12 @@ export class DatabaseStorage implements IStorage {
       .select()
       .from(articles)
       .where(
-        or(
-          ilike(articles.title, `%${query}%`),
-          ilike(articles.intro, `%${query}%`)
+        and(
+          eq(articles.status, "published"),
+          or(
+            ilike(articles.title, `%${query}%`),
+            ilike(articles.intro, `%${query}%`)
+          )
         )
       )
       .orderBy(articles.title);
@@ -107,7 +110,10 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(articles)
-      .where(sql`${categoryName} = ANY(${articles.categoryNames})`)
+      .where(and(
+        eq(articles.status, "published"),
+        sql`${categoryName} = ANY(${articles.categoryNames})`
+      ))
       .orderBy(articles.title);
   }
 
@@ -115,6 +121,7 @@ export class DatabaseStorage implements IStorage {
     return await db
       .select()
       .from(articles)
+      .where(eq(articles.status, "published"))
       .orderBy(desc(articles.updatedAt))
       .limit(limit);
   }
@@ -171,10 +178,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getCategoriesWithCounts(): Promise<{ name: string; count: number }[]> {
-    const allArticles = await db.select().from(articles);
+    const publishedArticles = await db.select().from(articles).where(eq(articles.status, "published"));
     const categoryCounts = new Map<string, number>();
 
-    for (const article of allArticles) {
+    for (const article of publishedArticles) {
       for (const categoryName of article.categoryNames) {
         categoryCounts.set(categoryName, (categoryCounts.get(categoryName) || 0) + 1);
       }

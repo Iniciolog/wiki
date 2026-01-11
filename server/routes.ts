@@ -11,10 +11,10 @@ export async function registerRoutes(
 ): Promise<Server> {
   // Article routes
   
-  // Get all articles
+  // Get all published articles (public)
   app.get("/api/articles", async (req, res) => {
     try {
-      const articles = await storage.getAllArticles();
+      const articles = await storage.getPublishedArticles();
       res.json(articles);
     } catch (error: any) {
       res.status(500).json({ message: error.message });
@@ -74,7 +74,7 @@ export async function registerRoutes(
   // Get random article
   app.get("/api/articles/random", async (req, res) => {
     try {
-      const articles = await storage.getAllArticles();
+      const articles = await storage.getPublishedArticles();
       if (articles.length === 0) {
         return res.status(404).json({ message: "No articles found" });
       }

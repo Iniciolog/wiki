@@ -10,6 +10,9 @@ import ArticlePage from "@/pages/ArticlePage";
 import AllArticlesPage from "@/pages/AllArticlesPage";
 import LoginPage from "@/pages/LoginPage";
 import RegisterPage from "@/pages/RegisterPage";
+import ArticleEditorPage from "@/pages/ArticleEditorPage";
+import AdminPage from "@/pages/AdminPage";
+import MyArticlesPage from "@/pages/MyArticlesPage";
 import { ChatWidget } from "@/components/ChatWidget";
 
 function Router() {
@@ -24,6 +27,9 @@ function Router() {
       <Route path="/recent" component={AllArticlesPage} />
       <Route path="/login" component={LoginPage} />
       <Route path="/register" component={RegisterPage} />
+      <Route path="/create-article" component={ArticleEditorPage} />
+      <Route path="/admin" component={AdminPage} />
+      <Route path="/my-articles" component={MyArticlesPage} />
       <Route component={NotFound} />
     </Switch>
   );
