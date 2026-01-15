@@ -8,10 +8,19 @@ export interface CategoryWithCount {
 let articlesCache: Article[] | null = null;
 let categoriesCache: CategoryWithCount[] | null = null;
 
+// Get the base path for assets (works on both local and GitHub Pages)
+const getBasePath = () => {
+  if (typeof window !== 'undefined') {
+    return new URL('.', window.location.href).pathname;
+  }
+  return '/';
+};
+
 export async function getArticles(): Promise<Article[]> {
   if (articlesCache) return articlesCache;
   
-  const response = await fetch('/data/articles.json');
+  const basePath = getBasePath();
+  const response = await fetch(`${basePath}data/articles.json`);
   if (!response.ok) {
     throw new Error(`Failed to load articles: ${response.status}`);
   }
@@ -22,7 +31,8 @@ export async function getArticles(): Promise<Article[]> {
 export async function getCategories(): Promise<CategoryWithCount[]> {
   if (categoriesCache) return categoriesCache;
   
-  const response = await fetch('/data/categories.json');
+  const basePath = getBasePath();
+  const response = await fetch(`${basePath}data/categories.json`);
   if (!response.ok) {
     throw new Error(`Failed to load categories: ${response.status}`);
   }
