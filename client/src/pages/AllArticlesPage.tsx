@@ -2,18 +2,17 @@ import { useState, useEffect } from "react";
 import { Link, useParams, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, ChevronRight } from "lucide-react";
+import { Search, Menu, X, Moon, Sun, FileText, History, Star, Bookmark, Home, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { getArticles, getCategories } from "@/lib/staticData";
 import type { Article } from "@shared/schema";
-import { useAuth } from "@/lib/auth";
 
 export default function AllArticlesPage() {
-  const { user } = useAuth();
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
   const [sidebarOpen, setSidebarOpen] = useState(!isMobile);
   const [darkMode, setDarkMode] = useState(false);
@@ -50,11 +49,13 @@ export default function AllArticlesPage() {
   }, [params.name]);
 
   const { data: articlesData, isLoading: isLoadingArticles } = useQuery<Article[]>({
-    queryKey: ["/api/articles"],
+    queryKey: ["static-articles"],
+    queryFn: getArticles,
   });
 
   const { data: categories, isLoading: isLoadingCategories } = useQuery<{ name: string; count: number }[]>({
-    queryKey: ["/api/categories/with-counts"],
+    queryKey: ["static-categories"],
+    queryFn: getCategories,
   });
 
   const toggleDarkMode = () => {
@@ -140,13 +141,6 @@ export default function AllArticlesPage() {
             >
               {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-            {user && (
-              <Link href="/profile">
-                <Button variant="ghost" size="icon" data-testid="button-user-profile">
-                  <User className="h-5 w-5" />
-                </Button>
-              </Link>
-            )}
           </div>
         </div>
       </header>

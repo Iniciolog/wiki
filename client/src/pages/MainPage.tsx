@@ -2,13 +2,13 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Search, Menu, X, Moon, Sun, FileText, History, User, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap, PenSquare, FolderOpen, ShieldCheck, Megaphone } from "lucide-react";
+import { Search, Menu, X, Moon, Sun, FileText, History, Star, Bookmark, Home, ChevronRight, Edit, Clock, Sparkles, Shield, Heart, Zap } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useAuth } from "@/lib/auth";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
+import { getArticles, getCategories, getRecentArticles } from "@/lib/staticData";
 import type { Article } from "@shared/schema";
 
 export default function MainPage() {
@@ -27,7 +27,6 @@ export default function MainPage() {
   }, []);
   const [searchQuery, setSearchQuery] = useState("");
   const [, setLocation] = useLocation();
-  const { user } = useAuth();
   const { t } = useTranslation();
 
   const handleSearch = (e: React.FormEvent) => {
@@ -38,15 +37,18 @@ export default function MainPage() {
   };
 
   const { data: recentArticles, isLoading: isLoadingRecent } = useQuery<Article[]>({
-    queryKey: ["/api/articles/recent"],
+    queryKey: ["static-recent-articles"],
+    queryFn: () => getRecentArticles(10),
   });
 
   const { data: allArticles } = useQuery<Article[]>({
-    queryKey: ["/api/articles"],
+    queryKey: ["static-articles"],
+    queryFn: getArticles,
   });
 
   const { data: categories, isLoading: isLoadingCategories } = useQuery<{ name: string; count: number }[]>({
-    queryKey: ["/api/categories/with-counts"],
+    queryKey: ["static-categories"],
+    queryFn: getCategories,
   });
 
   const toggleDarkMode = () => {
@@ -116,13 +118,6 @@ export default function MainPage() {
             >
               {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-            {user && (
-              <Link href="/profile">
-                <Button variant="ghost" size="icon" data-testid="button-user-profile">
-                  <User className="h-5 w-5" />
-                </Button>
-              </Link>
-            )}
           </div>
         </div>
       </header>
@@ -169,12 +164,6 @@ export default function MainPage() {
                   <span>{t('nav.randomArticle')}</span>
                 </div>
               </Link>
-              <Link href="/announcements" data-testid="link-nav-announcements">
-                <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
-                  <Megaphone className="h-4 w-4" />
-                  <span>{t('nav.announcements')}</span>
-                </div>
-              </Link>
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 {t('nav.tools')}
@@ -185,36 +174,6 @@ export default function MainPage() {
                   <span>{t('nav.recentChanges')}</span>
                 </div>
               </Link>
-              {user && (
-                <>
-                  <Link href="/create-article" data-testid="link-nav-create-article">
-                    <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
-                      <PenSquare className="h-4 w-4" />
-                      <span>{t('nav.createArticle')}</span>
-                    </div>
-                  </Link>
-                  <Link href="/my-articles" data-testid="link-nav-my-articles">
-                    <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
-                      <FolderOpen className="h-4 w-4" />
-                      <span>{t('nav.myArticles')}</span>
-                    </div>
-                  </Link>
-                  <Link href="/my-announcements" data-testid="link-nav-my-announcements">
-                    <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
-                      <Megaphone className="h-4 w-4" />
-                      <span>{t('nav.myAnnouncements')}</span>
-                    </div>
-                  </Link>
-                </>
-              )}
-              {user?.role === "admin" && (
-                <Link href="/admin" data-testid="link-nav-admin">
-                  <div className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-sidebar-accent transition-colors cursor-pointer">
-                    <ShieldCheck className="h-4 w-4" />
-                    <span>{t('nav.adminPanel')}</span>
-                  </div>
-                </Link>
-              )}
 
               <div className="px-3 py-2 mt-4 text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                 {t('nav.sections')}
@@ -369,7 +328,7 @@ export default function MainPage() {
               </p>
 
               <div className="wiki-notice">
-                <div className="wiki-notice-title">📚 Начните изучение</div>
+                <div className="wiki-notice-title">Начните изучение</div>
                 <p className="mb-0">
                   Рекомендуем начать со статьи <Link href="/article/Инициология"><span className="text-wiki-link hover:underline cursor-pointer">«Инициология»</span></Link>, 
                   где подробно описаны основы системы и её отличия от других энергопрактик.

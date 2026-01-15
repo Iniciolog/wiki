@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useParams } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
-import { Search, Menu, X, Moon, Sun, FileText, Settings, History, User, Star, Bookmark, Home, Edit, Clock, ChevronDown, ChevronRight, Printer, Share2 } from "lucide-react";
+import { Search, Menu, X, Moon, Sun, FileText, History, Star, Bookmark, Home, Clock, ChevronDown, ChevronRight, Printer, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
@@ -13,27 +13,21 @@ import {
   CollapsibleContent,
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
+import { getArticleByTitle, getCategories } from "@/lib/staticData";
 import type { Article } from "@shared/schema";
-import { useAuth } from "@/lib/auth";
 
 export default function ArticlePage() {
   const params = useParams<{ title: string }>();
   const articleTitle = decodeURIComponent(params.title || "Инициология");
-  const { user } = useAuth();
   
-  const { data: article, isLoading: isLoadingArticle, error } = useQuery<Article>({
-    queryKey: ["/api/articles/by-title", articleTitle],
-    queryFn: async () => {
-      const response = await fetch(`/api/articles/by-title/${encodeURIComponent(articleTitle)}`);
-      if (!response.ok) {
-        throw new Error("Article not found");
-      }
-      return response.json();
-    },
+  const { data: article, isLoading: isLoadingArticle, error } = useQuery<Article | undefined>({
+    queryKey: ["static-article", articleTitle],
+    queryFn: () => getArticleByTitle(articleTitle),
   });
 
   const { data: categories, isLoading: isLoadingCategories } = useQuery<{ name: string; count: number }[]>({
-    queryKey: ["/api/categories/with-counts"],
+    queryKey: ["static-categories"],
+    queryFn: getCategories,
   });
   
   const isMobile = typeof window !== 'undefined' && window.innerWidth < 1024;
@@ -108,13 +102,6 @@ export default function ArticlePage() {
             >
               {darkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
             </Button>
-            {user && (
-              <Link href="/profile">
-                <Button variant="ghost" size="icon" data-testid="button-user-profile">
-                  <User className="h-5 w-5" />
-                </Button>
-              </Link>
-            )}
           </div>
         </div>
       </header>
@@ -230,17 +217,7 @@ export default function ArticlePage() {
                   <span>{article.title}</span>
                 </div>
 
-                <div className="flex items-center justify-between mb-4">
-                  <div className="flex items-center gap-2 text-sm">
-                    <Button variant="ghost" size="sm" className="h-8 gap-1.5" data-testid="button-edit-article">
-                      <Edit className="h-3.5 w-3.5" />
-                      Редактировать
-                    </Button>
-                    <Button variant="ghost" size="sm" className="h-8 gap-1.5" data-testid="button-history">
-                      <History className="h-3.5 w-3.5" />
-                      История
-                    </Button>
-                  </div>
+                <div className="flex items-center justify-end mb-4">
                   <div className="flex items-center gap-2">
                     <Button variant="ghost" size="icon" className="h-8 w-8" data-testid="button-print">
                       <Printer className="h-4 w-4" />
@@ -298,19 +275,13 @@ export default function ArticlePage() {
                       <div key={section.id}>
                         <Tag id={section.id}>
                           {section.title}
-                          <button className="wiki-edit-section ml-2" data-testid={`button-edit-${section.id}`}>
-                            [ред.]
-                          </button>
                         </Tag>
                         <div dangerouslySetInnerHTML={{ __html: section.content }} />
                       </div>
                     );
                   })}
 
-                  <h2 id="see-also">
-                    См. также
-                    <button className="wiki-edit-section ml-2">[ред.]</button>
-                  </h2>
+                  <h2 id="see-also">См. также</h2>
                   <ul>
                     {article.seeAlso.map((item) => (
                       <li key={item}>
@@ -321,10 +292,7 @@ export default function ArticlePage() {
                     ))}
                   </ul>
 
-                  <h2 id="references">
-                    Источники
-                    <button className="wiki-edit-section ml-2">[ред.]</button>
-                  </h2>
+                  <h2 id="references">Источники</h2>
                   <ol>
                     {article.references.map((ref, i) => (
                       <li key={i}>{ref}</li>
